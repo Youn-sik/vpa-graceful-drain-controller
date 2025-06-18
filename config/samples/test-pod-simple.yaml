@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: test-vpa-simple
+  namespace: default
+  annotations:
+    # 간단한 VPA 관리 Pod 테스트
+    vpa-managed: "true"
+  labels:
+    app: test-simple-app
+spec:
+  containers:
+  - name: simple-app
+    image: nginx:alpine
+    ports:
+    - containerPort: 80
+    resources:
+      requests:
+        memory: "32Mi"
+        cpu: "50m"
+      limits:
+        memory: "64Mi"
+        cpu: "100m"
+  restartPolicy: Always

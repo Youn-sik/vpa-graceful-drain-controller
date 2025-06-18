@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vpa-graceful-drain-controller
+  namespace: kube-system
+  labels:
+    app: vpa-graceful-drain-controller
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vpa-graceful-drain-controller
+  template:
+    metadata:
+      labels:
+        app: vpa-graceful-drain-controller
+      annotations:
+        vpa-managed: "true"
+    spec:
+      serviceAccountName: vpa-graceful-drain-controller
+      containers:
+      - name: controller
+        image: vpa-graceful-drain-controller:latest
+        imagePullPolicy: Never
+        args:
+        - --config-map-name=vpa-graceful-drain-config
+        - --config-map-namespace=kube-system
+        - --leader-elect=true
+        ports:
+        - containerPort: 8081
+          name: health
+          protocol: TCP
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: health
+          initialDelaySeconds: 15
+          periodSeconds: 20
+        readinessProbe:
+          httpGet:
+            path: /readyz
+            port: health
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        resources:
+          limits:
+            cpu: 500m
+            memory: 128Mi
+          requests:
+            cpu: 10m
+            memory: 64Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          runAsUser: 65532
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault

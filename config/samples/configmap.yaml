@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: vpa-graceful-drain-config
+  namespace: kube-system
+data:
+  gracePeriodSeconds: "30"
+  drainTimeoutSeconds: "300"
+  namespaceSelector: |
+    {
+      "include": ["default", "production"],
+      "exclude": ["kube-system", "kube-public"]
+    }
