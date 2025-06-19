@@ -54,6 +54,10 @@ func NewDefaultConfig() *Config {
 }
 
 func ParseConfig(configMap *corev1.ConfigMap) (*Config, error) {
+	if configMap == nil {
+		return nil, fmt.Errorf("configMap cannot be nil")
+	}
+
 	config := NewDefaultConfig()
 
 	if configMap.Data == nil {
