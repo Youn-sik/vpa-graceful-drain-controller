@@ -57,9 +57,9 @@ data:
 ## 개발 단계
 
 - [x] **Phase 1**: 기본 Controller 구조
-- [ ] **Phase 2**: Finalizer 기반 drain 메커니즘
-- [ ] **Phase 3**: 설정 시스템 및 최적화
-- [ ] **Phase 4**: 테스트 및 문서화
+- [x] **Phase 2**: Finalizer 기반 drain 메커니즘
+- [x] **Phase 3**: 설정 시스템 및 최적화
+- [x] **Phase 4**: 테스트 및 문서화
 
 ## 아키텍처
 
